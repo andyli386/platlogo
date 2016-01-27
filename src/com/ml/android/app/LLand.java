@@ -66,13 +66,13 @@ public class LLand extends FrameLayout {
 
     final static int[] POPS = {
             // resid                // spinny!  // alpha
-            R.drawable.pop_belt,    0,          255,
-            R.drawable.pop_droid,   0,          255,
-            R.drawable.pop_pizza,   1,          255,
-            R.drawable.pop_stripes, 0,          255,
-            R.drawable.pop_swirl,   1,          255,
-            R.drawable.pop_vortex,  1,          255,
-            R.drawable.pop_vortex2, 1,          255,
+            //R.drawable.pop_belt,    0,          255,
+            //R.drawable.pop_droid,   0,          255,
+            //R.drawable.pop_pizza,   1,          255,
+            //R.drawable.pop_stripes, 0,          255,
+            //R.drawable.pop_swirl,   1,          255,
+            //R.drawable.pop_vortex,  1,          255,
+            //R.drawable.pop_vortex2, 1,          255,
             R.drawable.pop_ball,    0,          190,
     };
 
@@ -152,10 +152,11 @@ public class LLand extends FrameLayout {
     private int mTimeOfDay;
     private static final int DAY = 0, NIGHT = 1, TWILIGHT = 2, SUNSET = 3;
     private static final int[][] SKIES = {
-            { 0xFFc0c0FF, 0xFFa0a0FF }, // DAY
-            { 0xFF000010, 0xFF000000 }, // NIGHT
-            { 0xFF000040, 0xFF000010 }, // TWILIGHT
-            { 0xFFa08020, 0xFF204080 }, // SUNSET
+             { 0xFFffffff, 0xFFfffff5}, // NIGHT
+           // { 0xFFc0c0FF, 0xFFa0a0FF }, // DAY
+           // { 0xFF000010, 0xFF000000 }, // NIGHT
+           // { 0xFF000040, 0xFF000010 }, // TWILIGHT
+           // { 0xFFa08020, 0xFF204080 }, // SUNSET
     };
 
     private static Params PARAMS;
@@ -232,7 +233,9 @@ public class LLand extends FrameLayout {
         sky.setDither(true);
         setBackground(sky);
 
-        mFlipped = frand() > 0.5f;
+        //mFlipped = frand() > 0.5f;
+
+        mFlipped = false;
         setScaleX(mFlipped ? -1 : 1);
 
         setScore(0);
@@ -250,38 +253,38 @@ public class LLand extends FrameLayout {
         mWidth = getWidth();
         mHeight = getHeight();
 
-        boolean showingSun = (mTimeOfDay == DAY || mTimeOfDay == SUNSET) && frand() > 0.25;
-        if (showingSun) {
-            final Star sun = new Star(getContext());
-            sun.setBackgroundResource(R.drawable.sun);
-            final int w = getResources().getDimensionPixelSize(R.dimen.sun_size);
-            sun.setTranslationX(frand(w, mWidth-w));
-            if (mTimeOfDay == DAY) {
-                sun.setTranslationY(frand(w, (mHeight * 0.66f)));
-                sun.getBackground().setTint(0);
-            } else {
-                sun.setTranslationY(frand(mHeight * 0.66f, mHeight - w));
-                sun.getBackground().setTintMode(PorterDuff.Mode.SRC_ATOP);
-                sun.getBackground().setTint(0xC0FF8000);
+        //boolean showingSun = (mTimeOfDay == DAY || mTimeOfDay == SUNSET) && frand() > 0.25;
+        //if (showingSun) {
+        //    final Star sun = new Star(getContext());
+        //    sun.setBackgroundResource(R.drawable.sun);
+        //    final int w = getResources().getDimensionPixelSize(R.dimen.sun_size);
+        //    sun.setTranslationX(frand(w, mWidth-w));
+        //    if (mTimeOfDay == DAY) {
+        //        sun.setTranslationY(frand(w, (mHeight * 0.66f)));
+        //        sun.getBackground().setTint(0);
+        //    } else {
+        //        sun.setTranslationY(frand(mHeight * 0.66f, mHeight - w));
+        //        sun.getBackground().setTintMode(PorterDuff.Mode.SRC_ATOP);
+        //        sun.getBackground().setTint(0xC0FF8000);
 
-            }
-            addView(sun, new LayoutParams(w, w));
-        }
-        if (!showingSun) {
-            final boolean dark = mTimeOfDay == NIGHT || mTimeOfDay == TWILIGHT;
-            final float ff = frand();
-            if ((dark && ff < 0.75f) || ff < 0.5f) {
-                final Star moon = new Star(getContext());
-                moon.setBackgroundResource(R.drawable.moon);
-                moon.getBackground().setAlpha(dark ? 255 : 128);
-                moon.setScaleX(frand() > 0.5 ? -1 : 1);
-                moon.setRotation(moon.getScaleX() * frand(5, 30));
-                final int w = getResources().getDimensionPixelSize(R.dimen.sun_size);
-                moon.setTranslationX(frand(w, mWidth - w));
-                moon.setTranslationY(frand(w, mHeight - w));
-                addView(moon, new LayoutParams(w, w));
-            }
-        }
+        //    }
+        //    addView(sun, new LayoutParams(w, w));
+        //}
+        //if (!showingSun) {
+        //    final boolean dark = mTimeOfDay == NIGHT || mTimeOfDay == TWILIGHT;
+        //    final float ff = frand();
+        //    if ((dark && ff < 0.75f) || ff < 0.5f) {
+        //        final Star moon = new Star(getContext());
+        //        moon.setBackgroundResource(R.drawable.moon);
+        //        moon.getBackground().setAlpha(dark ? 255 : 128);
+        //        moon.setScaleX(frand() > 0.5 ? -1 : 1);
+        //        moon.setRotation(moon.getScaleX() * frand(5, 30));
+        //        final int w = getResources().getDimensionPixelSize(R.dimen.sun_size);
+        //        moon.setTranslationX(frand(w, mWidth - w));
+        //        moon.setTranslationY(frand(w, mHeight - w));
+        //        addView(moon, new LayoutParams(w, w));
+        //    }
+        //}
 
         final int mh = mHeight / 6;
         final boolean cloudless = frand() < 0.25;
@@ -956,30 +959,30 @@ public class LLand extends FrameLayout {
         public Building(Context context) {
             super(context);
 
-            w = irand(PARAMS.BUILDING_WIDTH_MIN, PARAMS.BUILDING_WIDTH_MAX);
-            h = 0; // will be setup later, along with z
+            //w = irand(PARAMS.BUILDING_WIDTH_MIN, PARAMS.BUILDING_WIDTH_MAX);
+            //h = 0; // will be setup later, along with z
 
-            setTranslationZ(PARAMS.SCENERY_Z);
+            //setTranslationZ(PARAMS.SCENERY_Z);
         }
     }
 
     private class Cloud extends Scenery {
         public Cloud(Context context) {
             super(context);
-            setBackgroundResource(frand() < 0.01f ? R.drawable.cloud_off : R.drawable.cloud);
-            getBackground().setAlpha(0x40);
-            w = h = irand(PARAMS.CLOUD_SIZE_MIN, PARAMS.CLOUD_SIZE_MAX);
-            z = 0;
-            v = frand(0.15f,0.5f);
+            //setBackgroundResource(frand() < 0.01f ? R.drawable.cloud_off : R.drawable.cloud);
+            //getBackground().setAlpha(0x40);
+            //w = h = irand(PARAMS.CLOUD_SIZE_MIN, PARAMS.CLOUD_SIZE_MAX);
+            //z = 0;
+            //v = frand(0.15f,0.5f);
         }
     }
 
     private class Star extends Scenery {
         public Star(Context context) {
             super(context);
-            setBackgroundResource(R.drawable.star);
-            w = h = irand(PARAMS.STAR_SIZE_MIN, PARAMS.STAR_SIZE_MAX);
-            v = z = 0;
+            //setBackgroundResource(R.drawable.star);
+            //w = h = irand(PARAMS.STAR_SIZE_MIN, PARAMS.STAR_SIZE_MAX);
+            //v = z = 0;
         }
     }
 }
